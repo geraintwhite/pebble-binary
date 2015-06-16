@@ -1,4 +1,10 @@
 # pebble-binary
 Binary watchface for Pebble with date and weather string
 
-![binary watchface](http://cdn.dvbris.com/binary-pebble.png)
+12 hour watchface:
+
+![binary watchface](http://cdn.dvbris.com/binary-pebble-12h.png)
+
+24 hour watchface:
+
+![binary watchface](http://cdn.dvbris.com/binary-pebble-24h.png)
