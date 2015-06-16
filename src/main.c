@@ -11,12 +11,10 @@ enum {
   CIRCLE_PADDING = 2,
   SIDE_PADDING = 12,
 
-  HOURS_MAX_COLS = 5,
+  HOURS_MAX_COLS = 4,
   MINUTES_MAX_COLS = 6,
-  HOURS_CIRCLE_RADIUS = 10,
-  MINUTES_CIRCLE_RADIUS = 8,
-  HOURS_ROW_START = (HOURS_CIRCLE_RADIUS),
-  MINUTES_ROW_START = (4 * HOURS_ROW_START) 
+  HOURS_ROW_START = SIDE_PADDING,
+  MINUTES_ROW_START = 4 * SIDE_PADDING
 };
 
 static Window *s_main_window;
@@ -47,10 +45,12 @@ static void draw_cell(GContext *ctx, GPoint center, short radius, bool filled) {
 static GPoint get_cell_centre(short x, short y, short radius) {
   short cell_size = (2 * (radius + CIRCLE_PADDING));
 
-  return GPoint(SCREEN_WIDTH - (12 + (cell_size / 2) + (cell_size * x)), (cell_size / 2) + y);
+  return GPoint(SCREEN_WIDTH - (SIDE_PADDING + (cell_size / 2) + (cell_size * x)), (cell_size / 2) + y);
 }
 
-static void draw_cell_row_for_digit(GContext *ctx, short digit, short max_cols, short cell_row, short radius) {
+static void draw_cell_row_for_digit(GContext *ctx, short digit, short max_cols, short cell_row) {
+  short radius = (((SCREEN_WIDTH - (2 * SIDE_PADDING)) / max_cols) - (2 * CIRCLE_PADDING)) / 2;
+
   for (int i = 0; i < max_cols; i++) {
     draw_cell(ctx, get_cell_centre(i, cell_row, radius), radius, (digit >> i) & 0x1);
   }
@@ -70,9 +70,10 @@ static void display_layer_update_callback(Layer *layer, GContext *ctx) {
   struct tm *t = localtime(&now);
 
   short display_hour = get_display_hour(t->tm_hour);
+  short hours_bits = HOURS_MAX_COLS + (clock_is_24h_style() ? 1 : 0);
 
-  draw_cell_row_for_digit(ctx, display_hour, HOURS_MAX_COLS, HOURS_ROW_START, HOURS_CIRCLE_RADIUS);
-  draw_cell_row_for_digit(ctx, t->tm_min, MINUTES_MAX_COLS, MINUTES_ROW_START, MINUTES_CIRCLE_RADIUS);
+  draw_cell_row_for_digit(ctx, display_hour, hours_bits, HOURS_ROW_START);
+  draw_cell_row_for_digit(ctx, t->tm_min, MINUTES_MAX_COLS, MINUTES_ROW_START);
 }
 
 static void main_window_load(Window *window) {
