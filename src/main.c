@@ -17,6 +17,8 @@ enum {
   MINUTES_ROW_START = 4 * SIDE_PADDING
 };
 
+bool bluetooth_connected = true;
+
 static Window *s_main_window;
 static Layer *s_display_layer;
 static TextLayer *s_date_layer, *s_weather_layer, *s_battery_layer;
@@ -30,6 +32,13 @@ static void handle_battery(BatteryChargeState charge_state) {
     snprintf(battery_text, sizeof(battery_text), "%d%% charged", charge_state.charge_percent);
   }
   text_layer_set_text(s_battery_layer, battery_text);
+}
+
+static void handle_bluetooth(bool connected) {
+  if (connected != bluetooth_connected) {
+    bluetooth_connected = connected;
+    vibes_double_pulse();
+  }
 }
 
 static void draw_cell(GContext *ctx, GPoint center, short radius, bool filled) {
@@ -128,8 +137,6 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
     dict_write_uint8(iter, 0, 0);
     app_message_outbox_send();
   }
-
-  handle_battery(battery_state_service_peek());
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -168,6 +175,11 @@ static void init() {
 
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   battery_state_service_subscribe(handle_battery);
+  bluetooth_connection_service_subscribe(handle_bluetooth);
+  
+  // Get initial battery percentage and bluetooth state
+  handle_battery(battery_state_service_peek());
+  bluetooth_connected = bluetooth_connection_service_peek();
 
   app_message_register_inbox_received(inbox_received_callback);
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
