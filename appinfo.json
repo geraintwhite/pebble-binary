@@ -1,23 +1,27 @@
 {
-    "appKeys": {
-        "KEY_CONDITIONS": 1,
-        "KEY_TEMPERATURE": 0
-    },
-    "capabilities": [
-        "location"
-    ],
-    "companyName": "geraintwhite@gmail.com",
-    "longName": "Binary Watch",
-    "projectType": "native",
-    "resources": {
-        "media": []
-    },
-    "sdkVersion": "2",
-    "shortName": "Binary Watch",
-    "uuid": "379769ca-11e8-48c7-a61a-c0b2260eade2",
-    "versionCode": 1,
-    "versionLabel": "1.3",
-    "watchapp": {
-        "watchface": true
-    }
+  "appKeys": {
+    "KEY_CONDITIONS": 1,
+    "KEY_TEMPERATURE": 0
+  },
+  "capabilities": [
+    "location"
+  ],
+  "companyName": "geraintwhite@gmail.com",
+  "longName": "Binary Watch",
+  "projectType": "native",
+  "resources": {
+    "media": []
+  },
+  "sdkVersion": "3",
+  "shortName": "Binary Watch",
+  "uuid": "379769ca-11e8-48c7-a61a-c0b2260eade2",
+  "versionCode": 1,
+  "versionLabel": "1.3",
+  "watchapp": {
+    "watchface": true
+  },
+  "targetPlatforms": [
+    "aplite",
+    "basalt"
+  ]
 }
