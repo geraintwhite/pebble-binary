@@ -8,8 +8,8 @@ var xhrRequest = function (url, type, callback) {
 };
 
 function locationSuccess(pos) {
-  var url = 'http://api.openweathermap.org/data/2.5/weather?lat=' +
-      pos.coords.latitude + '&lon=' + pos.coords.longitude;
+  var url = 'http://api.openweathermap.org/data/2.5/weather' +
+      '?lat=' + pos.coords.latitude + '&lon=' + pos.coords.longitude + '&appid=11c8a2c1236b923c156aebf3e4419037';
 
   xhrRequest(url, 'GET', 
     function(responseText) {

@@ -16,7 +16,7 @@
     "shortName": "Binary Watch",
     "uuid": "379769ca-11e8-48c7-a61a-c0b2260eade2",
     "versionCode": 1,
-    "versionLabel": "1.2",
+    "versionLabel": "1.3",
     "watchapp": {
         "watchface": true
     }

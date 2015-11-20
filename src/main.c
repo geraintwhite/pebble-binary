@@ -173,6 +173,7 @@ static void init() {
   });
   window_stack_push(s_main_window, true);
 
+  // Subscribe service handlers
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   battery_state_service_subscribe(handle_battery);
   bluetooth_connection_service_subscribe(handle_bluetooth);
@@ -181,6 +182,7 @@ static void init() {
   handle_battery(battery_state_service_peek());
   bluetooth_connected = bluetooth_connection_service_peek();
 
+  // Set up listeners for PebbleKit JS
   app_message_register_inbox_received(inbox_received_callback);
   app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 }
