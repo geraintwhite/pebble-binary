@@ -3,7 +3,7 @@
 enum {
   SCREEN_WIDTH = 144,
   SCREEN_HEIGHT = 168,
-  
+
   KEY_TEMPERATURE = 0,
   KEY_CONDITIONS = 1,
 
@@ -70,8 +70,7 @@ static short get_display_hour(short hour) {
     return hour;
   }
 
-  short display_hour = hour % 12;
-  return display_hour ? display_hour : 12;
+  return hour % 12 || 12;
 }
 
 static void display_layer_update_callback(Layer *layer, GContext *ctx) {
@@ -177,7 +176,7 @@ static void init() {
   tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   battery_state_service_subscribe(handle_battery);
   bluetooth_connection_service_subscribe(handle_bluetooth);
-  
+
   // Get initial battery percentage and bluetooth state
   handle_battery(battery_state_service_peek());
   bluetooth_connected = bluetooth_connection_service_peek();
