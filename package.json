@@ -32,8 +32,7 @@
     },
     "targetPlatforms": [
       "aplite",
-      "basalt",
-      "chalk"
+      "basalt"
     ],
     "capabilities": [
       "location",
