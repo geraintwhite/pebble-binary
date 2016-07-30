@@ -20,8 +20,8 @@ function locationSuccess(pos) {
       var conditions = json.weather[0].main;      
       
       var dictionary = {
-        'KEY_TEMPERATURE': temperature,
-        'KEY_CONDITIONS': conditions
+        'TEMPERATURE': temperature,
+        'CONDITIONS': conditions,
       };
 
       // Send to Pebble
@@ -49,16 +49,38 @@ function getWeather() {
   );
 }
 
-Pebble.addEventListener('ready', 
-  function(e) {
-    console.log('PebbleKit JS ready!');
-    getWeather();
-  }
-);
+Pebble.addEventListener('ready', function() {
+  console.log('PebbleKit JS ready!');
+  getWeather();
+});
 
-Pebble.addEventListener('appmessage',
-  function(e) {
-    console.log('AppMessage received!');
-    getWeather();
-  }                     
-);
+Pebble.addEventListener('appmessage', function() {
+  console.log('AppMessage received!');
+  getWeather();
+});
+
+Pebble.addEventListener('showConfiguration', function(e) {
+  var url = 'http://pebble.geraintwhite.co.uk/?options=batteryPercentage+showDate+invertColours+bluetoothVibrate+hourlyVibrate+showWeather';
+  console.log('Showing configuration page: ' + url);
+  Pebble.openURL(url);
+});
+
+Pebble.addEventListener('webviewclosed', function(e) {
+  var config = JSON.parse(decodeURIComponent(e.response));
+  console.log('Config window returned: ' + JSON.stringify(config));
+
+  var data = {
+    'BATTERY_PERCENTAGE': config.batteryPercentage ? 1 : 0,
+    'SHOW_DATE': config.showDate ? 1 : 0,
+    'INVERT_COLOURS': config.invertColours ? 1 : 0,
+    'BLUETOOTH_VIBRATE': config.bluetoothVibrate ? 1 : 0,
+    'HOURLY_VIBRATE': config.hourlyVibrate ? 1 : 0,
+    'SHOW_WEATHER': config.showWeather ? 1 : 0,
+  };
+
+  Pebble.sendAppMessage(data, function() {
+    console.log('Sent config data to Pebble');
+  }, function() {
+    console.log('Failed to send config data!');
+  });
+});
